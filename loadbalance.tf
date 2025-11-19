@@ -2,35 +2,35 @@
 # Please review these resources and move them into your main configuration files.
 
 
-#resource "aws_lb_listener" "public-listener-http" {
-#  load_balancer_arn = aws_lb.test.arn
-#  port              = "80"
-#  protocol          = "HTTP"
-#  #ssl_policy        = "ELBSecurityPolicy-2016-08"
-#  #certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
-#
-#  default_action {
-#    type             = "forward"
-#    target_group_arn = aws_lb_target_group.targetgroup01.arn
-#  }
-#  tags = {
-#    project = "lab01"
-#  }
-#}
-#resource "aws_lb" "test" {
-#  name               = "labpessoal01-alb"
-#  internal           = false
-#  load_balancer_type = "application"
-#  security_groups    = [aws_security_group.PublicALB.id]
-#  subnets            = [aws_subnet.labpessoal01-subnet-public1-us-east-1a.id, aws_subnet.labpessoal01-subnet-public2-us-east-1b.id]
-#  #target_group_arns  = [aws_lb_target_group.targetgroup01.arn]
-#
-#  enable_deletion_protection = false
-#
-#  tags = {
-#    project = "lab01"
-#  }
-#}
+resource "aws_lb_listener" "public-listener-http" {
+  load_balancer_arn = aws_lb.test.arn
+  port              = "80"
+  protocol          = "HTTP"
+  #ssl_policy        = "ELBSecurityPolicy-2016-08"
+  #certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.targetgroup01.arn
+  }
+  tags = {
+    project = "lab01"
+  }
+}
+resource "aws_lb" "test" {
+  name               = "labpessoal01-alb"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.PublicALB.id]
+  subnets            = [aws_subnet.labpessoal01-subnet-public1-us-east-1a.id, aws_subnet.labpessoal01-subnet-public2-us-east-1b.id]
+  #target_group_arns  = [aws_lb_target_group.targetgroup01.arn]
+
+  enable_deletion_protection = false
+
+  tags = {
+    project = "lab01"
+  }
+}
 
 # __generated__ by Terraform
 resource "aws_lb_target_group" "targetgroup01" {
