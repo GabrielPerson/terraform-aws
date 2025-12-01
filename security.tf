@@ -25,6 +25,17 @@ resource "aws_security_group" "PublicALB" {
     security_groups  = []
     self             = false
     to_port          = 80
+  },
+  {
+    cidr_blocks      = ["0.0.0.0/0"]
+    description      = "Public HTTPS"
+    from_port        = 443
+    ipv6_cidr_blocks = []
+    prefix_list_ids  = []
+    protocol         = "tcp"
+    security_groups  = []
+    self             = false
+    to_port          = 443
   }]
   name                   = "PublicALB"
   name_prefix            = null

@@ -1,13 +1,26 @@
 # __generated__ by Terraform
 # Please review these resources and move them into your main configuration files.
 
+resource "aws_lb_listener" "public-listener-https" {
+  load_balancer_arn = aws_lb.test.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate.gabrielpersoncert.arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.targetgroup01.arn
+  }
+  tags = {
+    project = "lab01"
+  }
+}
 
 resource "aws_lb_listener" "public-listener-http" {
   load_balancer_arn = aws_lb.test.arn
   port              = "80"
   protocol          = "HTTP"
-  #ssl_policy        = "ELBSecurityPolicy-2016-08"
-  #certificate_arn   = "arn:aws:iam::187416307283:server-certificate/test_cert_rab3wuqwgja25ct3n4jdj2tzu4"
 
   default_action {
     type             = "forward"
