@@ -1,6 +1,17 @@
 # __generated__ by Terraform
 # Please review these resources and move them into your main configuration files.
 
+# create a vpc from our vpc module
+module "new_vpc" {
+  source                             = ".//vpc_module"
+  project_name                       = "newmodulevpc"
+  vpc_cidr                           = "10.0.4.0/22"
+  public_subnet_az1_cidr             = "10.0.4.0/26"
+  public_subnet_az2_cidr             = "10.0.4.64/26"
+  private_subnet_az1_cidr            = "10.0.4.128/26"
+  private_subnet_az2_cidr            = "10.0.4.192/26"
+}
+
 # __generated__ by Terraform
 resource "aws_subnet" "labpessoal01-subnet-public1-us-east-1a" {
   assign_ipv6_address_on_creation                = false

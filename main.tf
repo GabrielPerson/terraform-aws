@@ -27,5 +27,3 @@ resource "aws_acm_certificate" "gabrielpersoncert" {
     create_before_destroy = true
   }
 }
-
-
