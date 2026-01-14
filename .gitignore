@@ -13,3 +13,6 @@
 
 # Crash log files
 crash.log
+
+terraform.tfstate
+terraform.tfstate.backup
