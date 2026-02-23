@@ -32,17 +32,14 @@ resource "aws_lb_listener" "public-listener-http" {
 
 
 resource "aws_lb" "app_loadbalancer" {
+
   name               = "${var.project_name}-alb"
   internal           = false
   load_balancer_type = "application"
   
   security_groups    = [var.alb_security_group_ids]
-  #security_groups    = [aws_security_group.PublicALB.id]
   
   subnets             = var.subnet_id
-  #subnets            = [aws_subnet.labpessoal01-subnet-public1-us-east-1a.id, aws_subnet.labpessoal01-subnet-public2-us-east-1b.id]
-  
-  #target_group_arns  = [aws_lb_target_group.targetgroup01.arn]
 
   enable_deletion_protection = false
 
@@ -79,14 +76,14 @@ resource "aws_lb_target_group" "intance_targetgroup" {
   
   health_check {
     enabled             = true
-    healthy_threshold   = 5
+    healthy_threshold   = 3
     interval            = 30
     matcher             = "200"
     path                = "/"
     port                = "traffic-port"
     protocol            = "HTTP"
-    timeout             = 5
-    unhealthy_threshold = 2
+    timeout             = 10
+    unhealthy_threshold = 5
   }
   stickiness {
     cookie_duration = 86400
@@ -94,23 +91,15 @@ resource "aws_lb_target_group" "intance_targetgroup" {
     enabled         = false
     type            = "lb_cookie"
   }
-  target_failover {
-    on_deregistration = "no_rebalance"
-    on_unhealthy      = "no_rebalance"
-  }
   target_group_health {
     dns_failover {
       minimum_healthy_targets_count      = "1"
       minimum_healthy_targets_percentage = "off"
     }
     unhealthy_state_routing {
-      minimum_healthy_targets_count      = 1
+      minimum_healthy_targets_count      = "1"
       minimum_healthy_targets_percentage = "off"
     }
-  }
-  target_health_state {
-    enable_unhealthy_connection_termination = false
-    unhealthy_draining_interval             = null
   }
 }
 

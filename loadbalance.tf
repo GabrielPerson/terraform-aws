@@ -1,15 +1,26 @@
 # __generated__ by Terraform
 # Please review these resources and move them into your main configuration files.
 
-#module "module_alb" {
-#  source                 = ".//elb_module"
-#  project_name           = "module-alb01"
-#  vpc_id                 = aws_vpc.labpessoal01-vpc.id
-#  https-cert             = aws_acm_certificate.gabrielpersoncert.arn
-#  subnet_id              = [aws_subnet.labpessoal01-subnet-public1-us-east-1a.id, aws_subnet.labpessoal01-subnet-public2-us-east-1b.id]
-#  alb_security_group_ids = aws_security_group.PublicALB.id
-#  target_instances       = [aws_instance.lab_instancia01, aws_instance.lab_instancia02]
-#}
+/* module "module_alb" {
+  source                 = ".//elb_module"
+  project_name           = "albwebservers"
+  vpc_id                 = module.web_vpc.vpc_id
+  https-cert             = aws_acm_certificate.gabrielpersoncert.arn
+  subnet_id              = [module.web_vpc.public_subnet_az1_id, module.web_vpc.public_subnet_az2_id]
+  alb_security_group_ids = aws_security_group.PublicALB.id
+  target_instances       = [aws_instance.webserver01, aws_instance.webserver02]
+} */
+
+/* module "module_alb" {
+  source                 = ".//elb_module"
+  project_name           = "testalb"
+  vpc_id                 = module.web_vpc.vpc_id
+  https-cert             = aws_acm_certificate.gabrielpersoncert.arn
+  subnet_id              = [module.web_vpc.public_subnet_az1_id, module.web_vpc.public_subnet_az2_id]
+  alb_security_group_ids = aws_security_group.PublicALB.id
+  target_instances       = [aws_instance.webserver_test01, aws_instance.webserver_test02]
+}  */
+
 
 ##### Olds
     #resource "aws_lb_listener" "public-listener-https" {

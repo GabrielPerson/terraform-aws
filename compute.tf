@@ -1,6 +1,89 @@
+/* resource "aws_instance" "webserver01" {
+  ami                          = "ami-07ff62358b87c7116"
+  instance_type                = "t3.micro"
+  subnet_id                    = module.web_vpc.private_subnet_az1_id
+  vpc_security_group_ids       = [aws_security_group.EC2xALB.id]
+  associate_public_ip_address  = false
+  user_data = base64encode(templatefile(
+    "${path.module}/scripts/setupweb_compact.sh", 
+      {
+        # 1. Lê o arquivo PHP, codifica em Base64 e passa para o script
+        payload_app = base64encode(file("${path.module}/scripts/index_compact.php")),
+        
+        # 2. Passa os dados do Banco de Dados para o script fazer o replace
+        db_address  = aws_db_instance.myrds.address
+        db_username = aws_db_instance.myrds.username
+        db_password = aws_db_instance.myrds.password # Cuidado com state file!
+    }))
+  tags = {
+    Name    = "webserver01"
+    project = "webrds"
+  }
+}
+
+resource "aws_instance" "webserver02" {
+  ami                          = "ami-07ff62358b87c7116"
+  instance_type                = "t3.micro"
+  subnet_id                    = module.web_vpc.private_subnet_az2_id
+  vpc_security_group_ids       = [aws_security_group.EC2xALB.id]
+  associate_public_ip_address  = false
+  user_data = base64encode(templatefile(
+    "${path.module}/scripts/setupweb_compact.sh", 
+      {
+        # 1. Lê o arquivo PHP, codifica em Base64 e passa para o script
+        payload_app = base64encode(file("${path.module}/scripts/index_compact.php")),
+        
+        # 2. Passa os dados do Banco de Dados para o script fazer o replace
+        db_address  = aws_db_instance.myrds.address
+        db_username = aws_db_instance.myrds.username
+        db_password = aws_db_instance.myrds.password # Cuidado com state file!
+    }))
+  tags = {
+    Name    = "webserver02"
+    project = "webrds"
+  } 
+} */
 
 
-## OLD
+
+/* resource "aws_instance" "webserver_test01" {
+  ami                          = "ami-07ff62358b87c7116"
+  instance_type                = "t3.micro"
+  subnet_id                    = module.web_vpc.private_subnet_az1_id
+  vpc_security_group_ids       = [aws_security_group.EC2xALB.id]
+  associate_public_ip_address  = false
+  user_data = base64encode(templatefile(
+    "${path.module}/scripts/test_server.sh", 
+      {
+        instance_name = "webserver_test01"
+    }))
+  tags = {
+    Name    = "webserver_test01"
+    project = "webrds"
+  }
+}
+
+resource "aws_instance" "webserver_test02" {
+  ami                          = "ami-07ff62358b87c7116"
+  instance_type                = "t3.micro"
+  subnet_id                    = module.web_vpc.private_subnet_az2_id
+  vpc_security_group_ids       = [aws_security_group.EC2xALB.id]
+  associate_public_ip_address  = false
+  user_data = base64encode(templatefile(
+    "${path.module}/scripts/test_server.sh", 
+      {
+        instance_name = "webserver_test02"
+    }))
+  tags = {
+    Name    = "webserver_test02"
+    project = "webrds"
+  } 
+} */
+
+
+
+###################### OLD
+
   #resource "aws_instance" "lab_instancia02" {
   #  ami                                  = "ami-052064a798f08f0d3"
   #  associate_public_ip_address          = false

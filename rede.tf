@@ -2,15 +2,108 @@
 # Please review these resources and move them into your main configuration files.
 
 # create a vpc from our vpc module
-module "new_vpc" {
+/* module "web_vpc" {
   source                             = ".//vpc_module"
-  project_name                       = "newmodulevpc"
+  project_name                       = "web_vpc"
   vpc_cidr                           = "10.0.4.0/22"
   public_subnet_az1_cidr             = "10.0.4.0/26"
   public_subnet_az2_cidr             = "10.0.4.64/26"
   private_subnet_az1_cidr            = "10.0.4.128/26"
   private_subnet_az2_cidr            = "10.0.4.192/26"
 }
+
+module "database_vpc" {
+  source                             = ".//vpc_module"
+  project_name                       = "database_vpc"
+  vpc_cidr                           = "10.0.0.0/22"
+  public_subnet_az1_cidr             = "10.0.0.0/26"
+  public_subnet_az2_cidr             = "10.0.0.64/26"
+  private_subnet_az1_cidr            = "10.0.0.128/26"
+  private_subnet_az2_cidr            = "10.0.0.192/26"
+}
+
+# create Elastic IP for NAT Gateway in web_vpc
+resource "aws_eip" "nat_eip" {
+  domain  = "vpc"
+  #depends_on = [module.web_vpc.internet_gateway]
+
+  tags = {
+    Name = "${module.web_vpc.project_name}-nat-eip"
+  }
+}
+
+# create NAT gateway
+resource "aws_nat_gateway" "nat_gateway" {
+  
+    allocation_id = aws_eip.nat_eip.id
+    subnet_id     = module.web_vpc.public_subnet_az1_id
+
+    tags = {
+      Name = "${module.web_vpc.project_name}-natgw"
+    }
+    depends_on = [module.web_vpc.internet_gateway]
+}
+
+resource "aws_route" "private_route_nat_gateway1" {
+  route_table_id            = module.web_vpc.private_route_table1_id
+  destination_cidr_block    = "0.0.0.0/0"
+  nat_gateway_id            = aws_nat_gateway.nat_gateway.id
+}
+
+resource "aws_route" "private_route_nat_gateway2" {
+  route_table_id            = module.web_vpc.private_route_table2_id
+  destination_cidr_block    = "0.0.0.0/0"
+  nat_gateway_id            = aws_nat_gateway.nat_gateway.id
+}
+
+
+## AWS VPC Peering Connection between web_vpc and database_vpc + route table updates
+resource "aws_vpc_peering_connection" "web_to_database_peering" {
+  
+  vpc_id        = module.web_vpc.vpc_id
+  peer_vpc_id   = module.database_vpc.vpc_id
+  #peer_region   = "us-east-1"
+  auto_accept = true
+
+  accepter {
+    allow_remote_vpc_dns_resolution = true
+  }
+
+  requester {
+    allow_remote_vpc_dns_resolution = true
+  }
+
+  tags = {
+    Name    = "web-to-database-peering"
+    project = "webrds"
+  }
+}
+
+resource "aws_route" "private_peering_web_to_database1" {
+  route_table_id            = module.web_vpc.private_route_table1_id
+  destination_cidr_block    = module.database_vpc.vpc_cidr
+  vpc_peering_connection_id = aws_vpc_peering_connection.web_to_database_peering.id
+}
+
+resource "aws_route" "private_peering_database_to_web1" {
+  route_table_id            = module.database_vpc.private_route_table1_id
+  destination_cidr_block    = module.web_vpc.vpc_cidr
+  vpc_peering_connection_id = aws_vpc_peering_connection.web_to_database_peering.id
+}
+
+resource "aws_route" "private_peering_web_to_database2" {
+  route_table_id            = module.web_vpc.private_route_table2_id
+  destination_cidr_block    = module.database_vpc.vpc_cidr
+  vpc_peering_connection_id = aws_vpc_peering_connection.web_to_database_peering.id
+}
+
+resource "aws_route" "private_peering_database_to_web2" {
+  route_table_id            = module.database_vpc.private_route_table2_id
+  destination_cidr_block    = module.web_vpc.vpc_cidr
+  vpc_peering_connection_id = aws_vpc_peering_connection.web_to_database_peering.id
+} */
+
+
 
 # __generated__ by Terraform
   #resource "aws_subnet" "labpessoal01-subnet-public1-us-east-1a" {

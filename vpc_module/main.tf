@@ -4,7 +4,6 @@ resource "aws_vpc" "vpc" {
     instance_tenancy            = "default"
     enable_dns_hostnames        = true
     enable_dns_support          = true
-
     tags = {
         Name                    = "${var.project_name}-vpc"
     }
@@ -18,19 +17,6 @@ resource "aws_internet_gateway" "internet_gateway" {
     Name                        = "${var.project_name}-igw"
   }
 }
-
-# create NAT gateway and attach it to vpc
-#resource "aws_nat_gateway" "nat_gateway" {
-#
-#    availability_mode = "regional"
-#    connectivity_type = "public"
-#    vpc_id = aws_vpc.vpc.id
-#    
-#
-#    tags = {
-#        Name    = "${var.project_name}-natgw"
-#    }
-#}
 
 # use data source to get list of all availability zones
 # Declare the data source
@@ -103,7 +89,7 @@ resource "aws_subnet" "private_subnet_az1" {
     vpc_id                     = aws_vpc.vpc.id
     cidr_block                 = var.private_subnet_az1_cidr
     availability_zone          = "us-east-1a"
-    map_public_ip_on_launch    = true
+    map_public_ip_on_launch    = false
     tags = {
         Name = "${var.project_name}-pvsubnet az1"
     }
@@ -114,20 +100,15 @@ resource "aws_subnet" "private_subnet_az2" {
     vpc_id                     = aws_vpc.vpc.id
     cidr_block                 = var.private_subnet_az2_cidr
     availability_zone          = "us-east-1b"
-    map_public_ip_on_launch    = true
+    map_public_ip_on_launch    = false
     tags = {
-        Name = "${var.project_name}-pvsubnet az1"
+        Name = "${var.project_name}-pvsubnet az2"
     }
 }
 
 # create pivate route table 1 and add route
 resource "aws_route_table" "private_route_table1" {
   vpc_id                     = aws_vpc.vpc.id
-
-  #route {
-  #  cidr_block               = "0.0.0.0/0"
-  #  gateway_id               = aws_nat_gateway.nat_gateway.id
-  #}
 
   tags = {
     Name                     = "${var.project_name}-pvrtb az1"
@@ -137,11 +118,6 @@ resource "aws_route_table" "private_route_table1" {
 # create route table 2 and add public route
 resource "aws_route_table" "private_route_table2" {
   vpc_id                     = aws_vpc.vpc.id
-
-  #route {
-  #  cidr_block               = "0.0.0.0/0"
-  #  gateway_id               = aws_nat_gateway.nat_gateway.id
-  #}
 
   tags = {
     Name                     = "${var.project_name}-pvrtb az2"

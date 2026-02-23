@@ -1,5 +1,117 @@
-# __generated__ by Terraform
-# Please review these resources and move them into your main configuration files.
+/* resource "aws_security_group" "PublicALB" {
+  description = "Public access to ALB"
+  name                   = "PublicALB"
+  name_prefix            = null
+  revoke_rules_on_delete = null
+  tags = {
+    Name    = "PublicALB"
+    project = "webrds"
+  }
+  tags_all = {
+    Name    = "PublicALB"
+    project = "webrds"
+  }
+  vpc_id = module.web_vpc.vpc_id
+}
+
+resource "aws_vpc_security_group_egress_rule" "egressALBtoEC2" {
+  
+  security_group_id = aws_security_group.PublicALB.id
+  referenced_security_group_id = aws_security_group.EC2xALB.id
+  ip_protocol = "-1"
+  description = "Allow ALB to EC2 egress"
+  
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ingressALBhttp" {
+  security_group_id = aws_security_group.PublicALB.id
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  from_port = 80
+  to_port = 80
+  description = "Allow ALB to EC2 egress"
+  
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ingressALBhttps" {
+  security_group_id = aws_security_group.PublicALB.id
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  from_port = 443
+  to_port = 443
+  description = "Allow ALB to EC2 egress"
+  
+}
+
+resource "aws_security_group" "EC2xALB" {
+  description = "allow alb x ec2 private connection"
+  name                   = "EC2xALB"
+  name_prefix            = null
+  revoke_rules_on_delete = null
+  tags = {
+    Name    = "EC2xALB"
+    project = "webrds"
+  }
+  tags_all = {
+    Name    = "EC2xALB"
+    project = "webrds"
+  }
+  vpc_id = module.web_vpc.vpc_id
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ingressEC2fromALB" {
+  
+  security_group_id = aws_security_group.EC2xALB.id
+  referenced_security_group_id = aws_security_group.PublicALB.id
+  ip_protocol = "tcp"
+  from_port = 80
+  to_port = 80
+  description = "Allow ALB to EC2 ingress"
+  
+}
+
+resource "aws_vpc_security_group_egress_rule" "egressEC2all" {
+  
+  security_group_id = aws_security_group.EC2xALB.id
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "-1"
+  description = "Allow all outbound traffic from EC2"
+  
+}
+
+## aws rds security group
+resource "aws_security_group" "rds-sg" {
+  name        = "rds-sg"
+  description = "Security group for RDS instance"
+  vpc_id      = module.database_vpc.vpc_id
+
+  tags = {
+    Name    = "rds-sg"
+    project = "webrds"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ingressRDSfromEC2" {
+  
+  security_group_id = aws_security_group.rds-sg.id
+  referenced_security_group_id = aws_security_group.EC2xALB.id
+  ip_protocol = "tcp"
+  from_port = 3306
+  to_port = 3306
+  description = "Allow EC2 instances to access RDS"
+  
+}
+
+resource "aws_vpc_security_group_egress_rule" "egressRDSall" {
+  
+  security_group_id = aws_security_group.rds-sg.id
+  cidr_ipv4   = "0.0.0.0/0"
+  ip_protocol = "-1"
+  description = "Allow all outbound traffic from RDS"
+  
+} */
+
+
 
 # __generated__ by Terraform from "sg-0ea261d1124936ba9"
 #resource "aws_security_group" "PublicALB" {

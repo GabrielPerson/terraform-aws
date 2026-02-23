@@ -6,6 +6,10 @@ output "vpc_id" {
   value = aws_vpc.vpc.id
 }
 
+output "vpc_cidr" {
+  value = aws_vpc.vpc.cidr_block
+}
+
 output "public_subnet_az1_id" {
   value = aws_subnet.public_subnet_az1.id
 }
@@ -20,6 +24,14 @@ output "private_subnet_az1_id" {
 
 output "private_subnet_az2_id" {
   value = aws_subnet.private_subnet_az2.id
+}
+
+output "private_route_table1_id" {
+  value = aws_route_table.private_route_table1.id
+}
+
+output "private_route_table2_id" {
+  value = aws_route_table.private_route_table2.id
 }
 
 output "internet_gateway" {
