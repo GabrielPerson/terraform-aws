@@ -5,7 +5,6 @@ resource "aws_lb_listener" "public_listener_https" {
   ssl_policy        = "ELBSecurityPolicy-2016-08"
   
   certificate_arn   = var.https-cert
-  #certificate_arn   = aws_acm_certiicate.gabrielpersoncert.arn
 
   default_action {
     type             = "forward"
@@ -17,18 +16,45 @@ resource "aws_lb_listener" "public_listener_https" {
 }
 
 resource "aws_lb_listener" "public-listener-http" {
+  
   load_balancer_arn = aws_lb.app_loadbalancer.arn
   port              = "80"
   protocol          = "HTTP"
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.intance_targetgroup.arn
+    type = "redirect"
+    redirect {
+      protocol = "HTTPS"  
+      port     = "443"
+      status_code = "HTTP_301"
+    }
   }
+
   tags = {
     project = "${var.project_name}"
   }
 }
+
+/* resource "aws_lb_listener_rule" "redirect_http_to_https" {
+  
+  listener_arn = aws_lb_listener.public-listener-http.arn
+  priority     = 100
+
+  action {
+    type = "redirect"
+
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+
+  condition {
+    
+  }
+
+} */
 
 
 resource "aws_lb" "app_loadbalancer" {
