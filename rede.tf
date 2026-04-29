@@ -2,7 +2,7 @@
 # Please review these resources and move them into your main configuration files.
 
 # create a vpc from our vpc module
-/* module "web_vpc" {
+module "web_vpc" {
   source                             = ".//vpc_module"
   project_name                       = "web_vpc"
   vpc_cidr                           = "10.0.4.0/22"
@@ -12,6 +12,7 @@
   private_subnet_az2_cidr            = "10.0.4.192/26"
 }
 
+/*
 module "database_vpc" {
   source                             = ".//vpc_module"
   project_name                       = "database_vpc"
@@ -30,10 +31,10 @@ resource "aws_eip" "nat_eip" {
   tags = {
     Name = "${module.web_vpc.project_name}-nat-eip"
   }
-}
+} */
 
 # create NAT gateway
-resource "aws_nat_gateway" "nat_gateway" {
+/* resource "aws_nat_gateway" "nat_gateway" {
   
     allocation_id = aws_eip.nat_eip.id
     subnet_id     = module.web_vpc.public_subnet_az1_id
@@ -54,11 +55,11 @@ resource "aws_route" "private_route_nat_gateway2" {
   route_table_id            = module.web_vpc.private_route_table2_id
   destination_cidr_block    = "0.0.0.0/0"
   nat_gateway_id            = aws_nat_gateway.nat_gateway.id
-}
+} */
 
 
 ## AWS VPC Peering Connection between web_vpc and database_vpc + route table updates
-resource "aws_vpc_peering_connection" "web_to_database_peering" {
+/* resource "aws_vpc_peering_connection" "web_to_database_peering" {
   
   vpc_id        = module.web_vpc.vpc_id
   peer_vpc_id   = module.database_vpc.vpc_id
