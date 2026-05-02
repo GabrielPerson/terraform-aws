@@ -51,7 +51,7 @@ resource "aws_route53_record" "gabrielpersonclick_acm_validation" {
 }
 
 # Load Balancer Alias Record - A record pointing to ALB
-resource "aws_route53_record" "loadbalancer_alias" {
+/* resource "aws_route53_record" "loadbalancer_alias" {
   zone_id = aws_route53_zone.gabrielpersonclick.zone_id
   name    = "gabrielperson.click"
   type    = "A"
@@ -61,7 +61,7 @@ resource "aws_route53_record" "loadbalancer_alias" {
     zone_id                = "Z35SXDOTRQ7X7K"
     evaluate_target_health = false
   }
-}
+} */
 
 # Outputs for Route 53 Zone
 output "route53_zone_id" {
