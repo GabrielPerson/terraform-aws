@@ -55,7 +55,7 @@ resource "aws_route53_record" "gabrielpersonclick_acm_validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.main.zone_id
+  zone_id         = aws_route53_zone.gabrielpersonclick.zone_id
 }
 
 # Load Balancer Alias Record - A record pointing to ALB
