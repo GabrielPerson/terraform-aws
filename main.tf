@@ -15,7 +15,7 @@ provider "aws" {
     shared_config_files = [ "C:\\Users\\Gabriel\\.aws\\config" ]
 }
 
-resource "aws_acm_certificate" "gabrielpersoncert" {
+resource "aws_acm_certificate" "gabrielpersonclick" {
   domain_name       = "gabrielperson.click"
   validation_method = "DNS"
 

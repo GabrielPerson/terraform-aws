@@ -15,7 +15,7 @@ resource "aws_route53_zone" "gabrielpersonclick" {
 # DNS Records for gabrielperson.click
 
 # NS Record - Name servers for the hosted zone
-resource "aws_route53_record" "gabrielpersonclick_NS" {
+/* resource "aws_route53_record" "gabrielpersonclick_NS" {
   zone_id = aws_route53_zone.gabrielpersonclick.zone_id
   name    = "gabrielperson.click"
   type    = "NS"
@@ -38,16 +38,24 @@ resource "aws_route53_record" "gabrielpersonclick_SOA" {
     "ns-319.awsdns-39.com. awsdns-hostmaster.amazon.com. 1 7200 900 1209600 86400"
   ]
 }
+ */
 
 # ACM Certificate Validation Record
 resource "aws_route53_record" "gabrielpersonclick_acm_validation" {
-  zone_id = aws_route53_zone.gabrielpersonclick.zone_id
-  name    = "_93e327443b165808cef440308397a075.gabrielperson.click"
-  type    = "CNAME"
-  ttl     = 300
-  records = [
-    "_eddc532b1016359b29dfbac6837006c3.jkddzztszm.acm-validations.aws."
-  ]
+  for_each = {
+    for dvo in aws_acm_certificate.gabrielpersonclick.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = data.aws_route53_zone.main.zone_id
 }
 
 # Load Balancer Alias Record - A record pointing to ALB
