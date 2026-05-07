@@ -2,7 +2,7 @@
 # Route 53 hosted zone and DNS records for gabrielperson.click
 # Zone ID: Z09881251V7DJK0XE9ZII
 
-resource "aws_route53_zone" "gabrielpersonclick" {
+/* resource "aws_route53_zone" "gabrielpersonclick" {
   name              = "gabrielperson.click"
   force_destroy     = false
   comment           = "Managed by Terraform"
@@ -10,7 +10,7 @@ resource "aws_route53_zone" "gabrielpersonclick" {
   tags = {
     project = "lab01"
   }
-}
+} */
 
 # DNS Records for gabrielperson.click
 
@@ -41,7 +41,7 @@ resource "aws_route53_record" "gabrielpersonclick_SOA" {
  */
 
 # ACM Certificate Validation Record
-resource "aws_route53_record" "gabrielpersonclick_acm_validation" {
+/* resource "aws_route53_record" "gabrielpersonclick_acm_validation" {
   for_each = {
     for dvo in aws_acm_certificate.gabrielpersonclick.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
@@ -56,7 +56,7 @@ resource "aws_route53_record" "gabrielpersonclick_acm_validation" {
   ttl             = 60
   type            = each.value.type
   zone_id         = aws_route53_zone.gabrielpersonclick.zone_id
-}
+} */
 
 # Load Balancer Alias Record - A record pointing to ALB
 /* resource "aws_route53_record" "loadbalancer_alias" {
