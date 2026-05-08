@@ -72,7 +72,7 @@ resource "aws_route53_record" "gabrielpersonclick_SOA" {
 } */
 
 # Outputs for Route 53 Zone
-output "route53_zone_id" {
+/* output "route53_zone_id" {
   description = "Zone ID for gabrielperson.click hosted zone"
   value       = aws_route53_zone.gabrielpersonclick.zone_id
 }
@@ -90,4 +90,4 @@ output "route53_name_servers" {
 output "route53_primary_name_server" {
   description = "Primary name server for gabrielperson.click hosted zone"
   value       = aws_route53_zone.gabrielpersonclick.primary_name_server
-}
+} */
